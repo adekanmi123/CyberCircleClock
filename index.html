@@ -71,9 +71,48 @@ body div#circles svg circle {
     left: 50%;
     z-index: 2;
 }
+/* /Clock */
+#heat {
+    height: 35px;
+    background-color: rgba(155, 155, 155, .1);
+    position: relative;
+}
+#heat div {
+    line-height: 31px;
+    height: 35px;
+    text-align: center;
+    font-family: 'ChessType';
+    color: #0f1412;
+    font-size: 18px;
+}
+#heat .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 65px;
+    text-align: center;
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+}
+#heat .fullscreen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 105px;
+    text-align: center;
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+}
         </style>
     </head>
     <body>
+        <div id="heat" style="-webkit-app-region: drag">
+            <div class="fullscreen" onclick="FullscreenApplication();">Fullscreen</div>
+            <div>CyberCircle Clock</div>
+            <div class="close" onclick="CloseApplication();">Close</div>
+        </div>
         <div id="clock"></div>
         <div id="circles"></div>
         <script>
@@ -103,6 +142,30 @@ function checkTime(i) {
 jQuery(function($) {
     startTime();
 });
+
+const remote = require('electron').remote;
+const {powerSaveBlocker} = remote;
+function CloseApplication() {
+    var window = remote.getCurrentWindow();
+    window.close();
+}
+
+let fullscreenMode = false;
+let scrSvr = null;
+function FullscreenApplication() {
+    fullscreenMode = !fullscreenMode;
+    
+    var window = remote.getCurrentWindow();
+    window.setFullScreen(fullscreenMode);
+    
+    if (window.isFullScreen()) {
+        scrSvr = powerSaveBlocker.start('prevent-display-sleep');
+    } else {
+        if (scrSvr) {
+            powerSaveBlocker.stop(scrSvr);
+        }
+    }
+}
         </script>
     </body>
 </html>
