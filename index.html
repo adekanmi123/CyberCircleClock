@@ -3,109 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Roll and Fall (version 2C-C-NBOMe made by -=((WidEMC))=-)</title>
-        <style>
-@font-face {
-    font-family: "ChessType";
-    src: url(./ChessType.ttf) format("truetype");
-}
-
-html {
-  height: 100%;
-}
-
-body {
-  height: 100%;
-  background-color: #0f1412;
-  overflow: hidden;
-}
-body div#circles {
-  width: 300px;
-  height: 300px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-body div#circles svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  translate: transform 1s;
-}
-body div#circles svg circle {
-  animation-duration: 4000ms;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  transform-origin: 50% 50%;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@keyframes spin-back {
-  0% {
-    transform: rotate(360deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-/* Clock */
-#clock {
-    font-family: 'ChessType';
-    font-size: 15vw;
-    color: white;
-    margin-left: -500px;
-    width: 1000px;
-    height: 0;
-    text-align: center;
-    position: fixed;
-    bottom: 25%;
-    left: 50%;
-    z-index: 2;
-}
-/* /Clock */
-#heat {
-    height: 35px;
-    background-color: rgba(155, 155, 155, .1);
-    position: relative;
-}
-#heat div {
-    line-height: 31px;
-    height: 35px;
-    text-align: center;
-    font-family: 'ChessType';
-    color: #0f1412;
-    font-size: 18px;
-}
-#heat .close {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 65px;
-    text-align: center;
-    -webkit-app-region: no-drag;
-    cursor: pointer;
-}
-#heat .fullscreen {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 105px;
-    text-align: center;
-    -webkit-app-region: no-drag;
-    cursor: pointer;
-}
-        </style>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <div id="heat" style="-webkit-app-region: drag">
@@ -113,7 +11,8 @@ body div#circles svg circle {
             <div>CyberCircle Clock</div>
             <div class="close" onclick="CloseApplication();">Close</div>
         </div>
-        <div id="clock"></div>
+        <div id="clock" class="clock"></div>
+        <div class="clock clock-back">88:88:88</div>
         <div id="circles"></div>
         <script>
             window.snap = require('snapsvg');
@@ -122,50 +21,6 @@ body div#circles svg circle {
             window.robot = require("robotjs");
         </script>
         <script src="./renderer.js"></script>
-        <script>
-function startTime() {
-    var today = new Date();
-    var h = today.getHours();
-    var m = today.getMinutes();
-    var s = today.getSeconds();
-    h = checkTime(h);
-    m = checkTime(m);
-    s = checkTime(s);
-    $('#clock').text(h + ":" + m + ":" + s);
-    
-    var t = setTimeout(startTime, 500);
-}
-function checkTime(i) {
-    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-    return i;
-}
-jQuery(function($) {
-    startTime();
-});
-
-const remote = require('electron').remote;
-const {powerSaveBlocker} = remote;
-function CloseApplication() {
-    var window = remote.getCurrentWindow();
-    window.close();
-}
-
-let fullscreenMode = false;
-let scrSvr = null;
-function FullscreenApplication() {
-    fullscreenMode = !fullscreenMode;
-    
-    var window = remote.getCurrentWindow();
-    window.setFullScreen(fullscreenMode);
-    
-    if (window.isFullScreen()) {
-        scrSvr = powerSaveBlocker.start('prevent-display-sleep');
-    } else {
-        if (scrSvr) {
-            powerSaveBlocker.stop(scrSvr);
-        }
-    }
-}
-        </script>
+        <script src="./display.js"></script>
     </body>
 </html>

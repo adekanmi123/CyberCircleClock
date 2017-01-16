@@ -41,8 +41,11 @@ jQuery(function($) {
     circles.push(new Circle(i));
   }
   
+  // When init circle will be on centre.
+  rotates(0, 0);
+  
   // Follow the mouse
-  let freeMode = false;
+  let freeMode = true;
   $(document).on('mousemove', (e) => {
     if (freeMode) {
         return;
@@ -58,17 +61,8 @@ jQuery(function($) {
     rotates(rotateX, rotateY);
   });
   $(document).on('click', () => { freeMode = !freeMode; });
-  setInterval(() => {
-    if (!freeMode) {
-        return;
-    }
-  
-    let str = circles[0].element.attr('style');
-    let rotateX = +str.match(/rotateX\(([-0-9\.]+?)deg\)/)[1] + ((Math.random() - 0.5) / 5);
-    let rotateY = +str.match(/rotateY\(([-0-9\.]+?)deg\)/)[1] + ((Math.random() - 0.5) / 5);
-  
-    rotates(rotateX, rotateY);
-  }, 100);
+  // Safe for dragging without free mode
+  $('#heat').on('click', (e) => { e.stopPropagation() });
   
   $('#circles').css('zoom', 1.5);
   $(document).on('mousewheel', (e) => {

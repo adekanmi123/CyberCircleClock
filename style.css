@@ -1,0 +1,106 @@
+@font-face {
+    font-family: "ChessType";
+    src: url(./ChessType.ttf) format("truetype");
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: #0f1412;
+  overflow: hidden;
+}
+body div#circles {
+  width: 300px;
+  height: 300px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+body div#circles svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  translate: transform 1s;
+}
+body div#circles svg circle {
+  animation-duration: 4000ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin-back {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Clock */
+.clock {
+    font-family: 'ChessType';
+    font-size: 15vw;
+    color: white;
+    width: 1000px;
+    height: 0;
+    text-align: center;
+    position: fixed;
+    bottom: 25%;
+    left: 50%;
+    z-index: 2;
+    transform: translate(-50%, 0);
+}
+.clock-back {
+    color: #398ec1;
+    opacity: 0.1;
+    z-index: 1;
+}
+/* /Clock */
+#heat {
+    height: 35px;
+    background-color: rgba(155, 155, 155, .1);
+    position: relative;
+}
+#heat div {
+    line-height: 31px;
+    height: 35px;
+    text-align: center;
+    font-family: 'ChessType';
+    color: #0f1412;
+    font-size: 18px;
+}
+#heat .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 65px;
+    text-align: center;
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+}
+#heat .fullscreen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 105px;
+    text-align: center;
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+}
