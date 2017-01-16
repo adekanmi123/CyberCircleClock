@@ -20,14 +20,11 @@ jQuery(function($) {
     // mouse move controll
     lastMouseMove = Date.now();
     mouseHidden = false;
-    setInterval(() => {
-        if (lastMouseMove + 2000 < Date.now()) {
-            stopMouse();
-        }
-    }, 200);
     $(document).on('mousemove', () => {
-        lastMouseMove = Date.now();
         startMouse();
+        
+        clearTimeout(lastMouseMove);
+        lastMouseMove = setTimeout(stopMouse, 2000);
     });
 
     function stopMouse() {
@@ -57,18 +54,20 @@ function CloseApplication() {
 
 let fullscreenMode = false;
 let scrSvr = null;
+var win = remote.getCurrentWindow();
+
 function FullscreenApplication() {
-    fullscreenMode = !fullscreenMode;
-    
-    var window = remote.getCurrentWindow();
-    window.setFullScreen(fullscreenMode);
-    
-    if (window.isFullScreen()) {
-        scrSvr = powerSaveBlocker.start('prevent-display-sleep');
-    } else {
-        if (scrSvr) {
-            powerSaveBlocker.stop(scrSvr);
-        }
-    }
+    win.setFullScreen(!fullscreenMode);
 }
+
+win.on('enter-full-screen', () => {
+    fullscreenMode = true;
+    scrSvr = powerSaveBlocker.start('prevent-display-sleep');
+});
+win.on('leave-full-screen', () => {
+    fullscreenMode = false;
+    if (scrSvr !== null) {
+        powerSaveBlocker.stop(scrSvr);
+    }
+});
 
